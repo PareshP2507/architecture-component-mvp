@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">DemoApp</string>
+    <string name="lifecycle_aware">LifeCycle Aware</string>
+    <string name="location_change">Location: %1$s %2$s</string>
+    <string name="title_room_persistence">Room Persistence</string>
+    <string name="person_id">ID #%d</string>
+    <string name="user_no">User %d</string>
+    <string name="add_user">Add User</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="age">Age</string>
+    <string name="submit">Submit</string>
+    <string name="field_required">Field required!</string>
+    <string name="not_found_text">Click (+) from the bottom right corner to add User.</string>
+    <string name="age_not_zero">Age can\'t be 0</string>
+</resources>

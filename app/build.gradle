@@ -1,0 +1,47 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "com.azilen.demoapp"
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    dataBinding {
+        enabled true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "com.android.support:appcompat-v7:$support_lib_ver"
+    implementation "com.android.support:design:$support_lib_ver"
+    // ViewModel and LiveData
+    implementation "android.arch.lifecycle:extensions:$arch_viewmodel_ver"
+    annotationProcessor "android.arch.lifecycle:compiler:$arch_viewmodel_ver"
+    // Room
+    implementation "android.arch.persistence.room:runtime:$arch_viewmodel_ver"
+    annotationProcessor "android.arch.persistence.room:compiler:$arch_viewmodel_ver"
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation "android.arch.persistence.room:rxjava2:$arch_viewmodel_ver"
+    // Timber
+    implementation "com.jakewharton.timber:timber:$timber_ver"
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
