@@ -2,6 +2,7 @@ package com.azilen.demoapp.ui.room;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 
 import com.azilen.demoapp.ui.room.db.AppDatabase;
 import com.azilen.demoapp.utils.Const;
@@ -55,14 +56,15 @@ class UserDataPresenter {
         if (requestCode == REQ_ADD_USER) {
             if (resultCode == Activity.RESULT_OK) {
                 String fName = data.getStringExtra(Const.ARG_EX_F_NAME);
-                mView.onUserInserted(fName);
+                boolean isUpdated = data.getBooleanExtra(Const.ARG_EX_IS_UPDATE, false);
+                mView.onUserInserted(fName, isUpdated);
             }
         }
     }
 
-    void gotoActivity(Class<?> destination) {
+    void gotoActivity(Class<?> destination, Bundle b) {
         ((Activity) mView.getContext()).startActivityForResult(
-                new Intent(mView.getContext(), destination), REQ_ADD_USER
+                new Intent(mView.getContext(), destination).putExtras(b), REQ_ADD_USER
         );
     }
 }

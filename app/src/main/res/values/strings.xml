@@ -13,4 +13,6 @@
     <string name="field_required">Field required!</string>
     <string name="not_found_text">Click (+) from the bottom right corner to add User.</string>
     <string name="age_not_zero">Age can\'t be 0</string>
+    <string name="update">Update</string>
+    <string name="update_user">Update User</string>
 </resources>

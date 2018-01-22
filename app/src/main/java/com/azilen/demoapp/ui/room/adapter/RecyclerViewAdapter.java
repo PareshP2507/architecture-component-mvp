@@ -15,7 +15,7 @@ import java.util.List;
  * Created by paresh on 18-01-2018
  */
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<User> mData;
 
@@ -27,7 +27,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RowUserBinding mBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.row_user, parent, false);
-        return new UserViewHolder(mBinding);
+        return new UserViewHolder(mBinding) {
+            @Override
+            void onItemClick(int position) {
+                onRowClick(position);
+            }
+        };
     }
 
     @Override
@@ -41,4 +46,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public int getItemCount() {
         return mData.size();
     }
+
+    protected abstract void onRowClick(int position);
 }

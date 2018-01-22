@@ -3,13 +3,17 @@ package com.azilen.demoapp.ui.room.add;
 import com.azilen.demoapp.ui.room.db.AppDatabase;
 import com.azilen.demoapp.ui.room.db.User;
 
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by paresh on 19-01-2018
  */
 
-class AddUserPresenter implements AddUserContract.EspressoPresenter {
+class AddUserPresenter implements AddUserContract.AddUserPresenter {
 
     private AddUserContract.EspressoView mView;
     private AppDatabase db;
@@ -23,9 +27,22 @@ class AddUserPresenter implements AddUserContract.EspressoPresenter {
 
     @Override
     public void addUser(User... user) {
-        if (null == user) return;
-        db.userDao().insertAll(user);
-        mView.onUserAdded(user);
+        Disposable disposable = Flowable.fromArray(user)
+                .doOnNext(user1 -> db.userDao().insertAll(user1))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(user12 -> mView.onUserAdded(user12));
+        compositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        Disposable disposable = Flowable.fromArray(user)
+                .doOnNext(user1 -> db.userDao().update(user1))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(user12 -> mView.onUserAdded(user12));
+        compositeDisposable.add(disposable);
     }
 
     @Override
@@ -33,5 +50,6 @@ class AddUserPresenter implements AddUserContract.EspressoPresenter {
         if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
             compositeDisposable.clear();
         }
+        db.destroy();
     }
 }

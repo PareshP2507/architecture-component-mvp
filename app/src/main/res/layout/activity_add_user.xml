@@ -44,7 +44,7 @@
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:hint="@string/first_name"
-                    android:inputType="textPersonName"
+                    android:inputType="textPersonName|textCapWords"
                     android:textSize="14sp" />
 
                 <EditText
@@ -55,7 +55,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:hint="@string/last_name"
-                    android:inputType="textPersonName"
+                    android:inputType="textPersonName|textCapWords"
                     android:textSize="14sp" />
 
             </LinearLayout>

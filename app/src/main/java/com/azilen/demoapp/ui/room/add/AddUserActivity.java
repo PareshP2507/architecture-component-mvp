@@ -1,6 +1,7 @@
 package com.azilen.demoapp.ui.room.add;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -22,13 +23,17 @@ public class AddUserActivity extends BaseActivity implements AddUserContract.Esp
 
     private AddUserPresenter ePresenter;
 
+    private Toolbar mToolbar;
     private EditText etFName;
     private EditText etLName;
     private EditText etAge;
+    private Button btnSubmit;
 
     private ErrorWatcher errorWatcherFName;
     private ErrorWatcher errorWatcherLName;
     private ErrorWatcher errorWatcherAge;
+
+    private User user;
 
     @Override
     protected int getLayoutXML() {
@@ -37,18 +42,23 @@ public class AddUserActivity extends BaseActivity implements AddUserContract.Esp
 
     @Override
     protected void initImpl() {
+        Bundle b = getIntent().getExtras();
+        if (null != b && b.containsKey(Const.ARG_EX_USER)) {
+            user = b.getParcelable(Const.ARG_EX_USER);
+        }
 
         ePresenter = new AddUserPresenter(this, AppDatabase.getInstance(this));
 
-        Toolbar mToolbar = findViewById(R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         mToolbar.setNavigationOnClickListener(v -> onBackPressed());
         etFName = findViewById(R.id.etFName);
         etLName = findViewById(R.id.etLName);
         etAge = findViewById(R.id.etAge);
+        btnSubmit = findViewById(R.id.btnSubmit);
 
         attachTextChangeListeners();
+        bindData();
 
-        Button btnSubmit = findViewById(R.id.btnSubmit);
         btnSubmit.setOnClickListener(this);
     }
 
@@ -62,6 +72,17 @@ public class AddUserActivity extends BaseActivity implements AddUserContract.Esp
         etAge.addTextChangedListener(errorWatcherAge);
     }
 
+    private void bindData() {
+        if (user == null) return;
+
+        etFName.setText(user.getFirstName());
+        etLName.setText(user.getLastName());
+        etAge.setText(String.valueOf(user.getAge()));
+
+        mToolbar.setTitle(R.string.update_user);
+        btnSubmit.setText(R.string.update);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -72,10 +93,17 @@ public class AddUserActivity extends BaseActivity implements AddUserContract.Esp
 
                 if (validateInputs(fName, lName, age)) {
                     User user = new User();
+                    if (this.user != null) {
+                        user.setUid(this.user.getUid());
+                    }
                     user.setFirstName(fName);
                     user.setLastName(lName);
                     user.setAge(Integer.parseInt(age));
-                    ePresenter.addUser(user);
+                    if (this.user != null) {
+                        ePresenter.updateUser(user);
+                    } else {
+                        ePresenter.addUser(user);
+                    }
                 }
                 break;
         }
@@ -124,6 +152,7 @@ public class AddUserActivity extends BaseActivity implements AddUserContract.Esp
     public void onUserAdded(User... user) {
         Intent intent = getIntent();
         intent.putExtra(Const.ARG_EX_F_NAME, user[0].getFirstName());
+        intent.putExtra(Const.ARG_EX_IS_UPDATE, this.user != null);
         setResult(RESULT_OK, intent);
         finish();
     }

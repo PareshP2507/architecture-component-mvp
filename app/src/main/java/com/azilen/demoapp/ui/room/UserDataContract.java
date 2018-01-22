@@ -18,7 +18,7 @@ class UserDataContract {
 
         void updateNoDataVisibility(boolean isVisible);
 
-        void onUserInserted(String firstName);
+        void onUserInserted(String firstName, boolean isUpdate);
 
         void onUserRetrieval(List<User> users);
 

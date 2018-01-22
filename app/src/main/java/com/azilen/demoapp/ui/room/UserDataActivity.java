@@ -2,6 +2,7 @@ package com.azilen.demoapp.ui.room;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DividerItemDecoration;
@@ -17,9 +18,12 @@ import com.azilen.demoapp.ui.room.add.AddUserActivity;
 import com.azilen.demoapp.ui.room.adapter.RecyclerViewAdapter;
 import com.azilen.demoapp.ui.room.db.AppDatabase;
 import com.azilen.demoapp.ui.room.db.User;
+import com.azilen.demoapp.utils.Const;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Created by paresh on 18-01-2018
@@ -54,18 +58,29 @@ public class UserDataActivity extends BaseActivity implements UserDataContract.D
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        adapter = new RecyclerViewAdapter(mData);
+        adapter = new RecyclerViewAdapter(mData) {
+            @Override
+            protected void onRowClick(int position) {
+                handleRecyclerViewRowClick(position);
+            }
+        };
         mRecyclerView.setAdapter(adapter);
         fabAdd.setOnClickListener(this);
 
         rPresenter.fetchAll();
     }
 
+    private void handleRecyclerViewRowClick(int position) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Const.ARG_EX_USER, mData.get(position));
+        rPresenter.gotoActivity(AddUserActivity.class, bundle);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fabAdd:
-                rPresenter.gotoActivity(AddUserActivity.class);
+                rPresenter.gotoActivity(AddUserActivity.class, new Bundle());
                 break;
         }
     }
@@ -81,16 +96,34 @@ public class UserDataActivity extends BaseActivity implements UserDataContract.D
     }
 
     @Override
-    public void onUserInserted(String fName) {
-        Snackbar.make(fabAdd, "User " + fName + " is inserted",
+    public void onUserInserted(String fName, boolean isUpdate) {
+        Snackbar.make(fabAdd, "User " + fName + " is " +(isUpdate ? "updated." : "inserted."),
                 Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public void onUserRetrieval(List<User> users) {
-        mData.clear();
-        mData.addAll(users);
-        adapter.notifyDataSetChanged();
+        for (User user :
+                users) {
+            Timber.d("## %s", user.getFirstName());
+        }
+        for (User user :
+                users) {
+            if (!ifExist(user.getUid())) {
+                mData.add(user);
+                adapter.notifyItemInserted(mData.size() + 1);
+            }
+        }
+    }
+
+    private boolean ifExist(int userId) {
+        for (User user :
+                mData) {
+            if (user.getUid() == userId) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

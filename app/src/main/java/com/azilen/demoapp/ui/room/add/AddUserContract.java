@@ -15,9 +15,11 @@ public class AddUserContract {
         void onUserAdded(User... user);
     }
 
-    public interface EspressoPresenter {
+    public interface AddUserPresenter {
 
         void addUser(User... user);
+
+        void updateUser(User user);
 
         void clear();
     }

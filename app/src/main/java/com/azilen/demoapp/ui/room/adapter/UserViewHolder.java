@@ -9,17 +9,20 @@ import com.azilen.demoapp.ui.room.db.User;
  * Created by paresh on 18-01-2018
  */
 
-class UserViewHolder extends RecyclerView.ViewHolder {
+abstract class UserViewHolder extends RecyclerView.ViewHolder {
 
     private RowUserBinding mBinding;
 
-    public UserViewHolder(RowUserBinding mBinding) {
+    UserViewHolder(RowUserBinding mBinding) {
         super(mBinding.getRoot());
         this.mBinding = mBinding;
+        mBinding.getRoot().setOnClickListener(v -> onItemClick(getAdapterPosition()));
     }
 
-    public void bind(User user) {
+    void bind(User user) {
         mBinding.setUser(user);
         mBinding.executePendingBindings();
     }
+
+    abstract void onItemClick(int position);
 }
