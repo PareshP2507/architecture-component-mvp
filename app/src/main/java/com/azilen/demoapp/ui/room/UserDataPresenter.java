@@ -34,9 +34,8 @@ class UserDataPresenter {
         mView.updateProgressVisibility(true);
         mView.updateNoDataVisibility(false);
         Disposable d = db.userDao().getAll()
-                .subscribeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
                 .subscribe(users -> {
                     mView.updateNoDataVisibility(users.size() == 0);
                     mView.onUserRetrieval(users);
@@ -49,7 +48,6 @@ class UserDataPresenter {
         if (null != compositeDisposable && !compositeDisposable.isDisposed()) {
             compositeDisposable.clear();
         }
-        db.destroy();
     }
 
     void processActivityResult(int requestCode, int resultCode, Intent data) {

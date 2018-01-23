@@ -50,6 +50,5 @@ class AddUserPresenter implements AddUserContract.AddUserPresenter {
         if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
             compositeDisposable.clear();
         }
-        db.destroy();
     }
 }

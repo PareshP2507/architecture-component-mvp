@@ -2,6 +2,8 @@ package com.azilen.demoapp;
 
 import android.app.Application;
 
+import com.azilen.demoapp.ui.room.db.AppDatabase;
+
 import timber.log.Timber;
 
 /**
@@ -18,6 +20,7 @@ public class ArchComp extends Application {
 
     private void initApp() {
         plantTimber();
+        AppDatabase.getInstance(this);
     }
 
     private void plantTimber() {

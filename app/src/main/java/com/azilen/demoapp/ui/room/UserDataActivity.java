@@ -14,16 +14,14 @@ import android.widget.ProgressBar;
 
 import com.azilen.demoapp.R;
 import com.azilen.demoapp.ui.BaseActivity;
-import com.azilen.demoapp.ui.room.add.AddUserActivity;
 import com.azilen.demoapp.ui.room.adapter.RecyclerViewAdapter;
+import com.azilen.demoapp.ui.room.add.AddUserActivity;
 import com.azilen.demoapp.ui.room.db.AppDatabase;
 import com.azilen.demoapp.ui.room.db.User;
 import com.azilen.demoapp.utils.Const;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import timber.log.Timber;
 
 /**
  * Created by paresh on 18-01-2018
@@ -103,27 +101,9 @@ public class UserDataActivity extends BaseActivity implements UserDataContract.D
 
     @Override
     public void onUserRetrieval(List<User> users) {
-        for (User user :
-                users) {
-            Timber.d("## %s", user.getFirstName());
-        }
-        for (User user :
-                users) {
-            if (!ifExist(user.getUid())) {
-                mData.add(user);
-                adapter.notifyItemInserted(mData.size() + 1);
-            }
-        }
-    }
-
-    private boolean ifExist(int userId) {
-        for (User user :
-                mData) {
-            if (user.getUid() == userId) {
-                return true;
-            }
-        }
-        return false;
+        mData.clear();
+        mData.addAll(users);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
