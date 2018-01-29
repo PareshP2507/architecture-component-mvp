@@ -1,37 +1,31 @@
-## Welcome to GitHub Pages
+## Android Archiecture Components
 
-You can use the [editor on GitHub](https://github.com/PareshP2507/architecture-component-mvp/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+A sample code, contains the way how the [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html) can be implemented.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+**The repo contains following components:**
+- **LifeCycle Components**<br/>
+A smart component that is tightly bound to the liefecycle of other component such as an Activity or a Fragment. This helps you to produce well-organized, light weight code that is easier to maintain.<br/>
+Using LifeCycle Component, you can write lifecycle dependent code _outside of lifecycle methods_, such as `onStart()`, `onPause`, `onResume` etc.
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/PareshP2507/architecture-component-mvp/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+- **Room Persistence Library**<br/>
+Its a wrapper over SQLite, that allows you to communicate with database like a champ. This is why Room is recommended:-<br/>
+  * Room validate queries at compile time, So - _No runtime failure_.
+  * Room overlaps some `raw SQL` queries, So - Not much lengthy boring queries.<br/>
+    This is how query looks like - 
+      ``` 
+      @Insert
+      void insertAll(User... users);
+      ```
+  * Room defines _thread containts_ to avoid drasting effects on App performance.
+  
+## Simple Setup
+  
+  **Gradle dependencies:**
+  ```
+  // LifeCycle components
+  implementation "android.arch.lifecycle:extensions:$arch_viewmodel_ver"
+  annotationProcessor "android.arch.lifecycle:compiler:$arch_viewmodel_ver"
+  // Room
+  implementation "android.arch.persistence.room:runtime:$arch_viewmodel_ver"
+  annotationProcessor "android.arch.persistence.room:compiler:$arch_viewmodel_ver"
+  ```
