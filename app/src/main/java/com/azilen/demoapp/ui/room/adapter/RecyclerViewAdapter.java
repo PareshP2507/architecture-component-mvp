@@ -60,7 +60,7 @@ public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
         if (pendingItems.size() > 1) {
             return;
         }
-        updateInternalItems(items);
+        updateInternalItems(pendingItems.peek()); // Peeking up from queue
     }
 
     /**
