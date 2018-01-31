@@ -58,8 +58,8 @@ public class UserDataActivity extends BaseActivity implements UserDataContract.D
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         adapter = new RecyclerViewAdapter(mData) {
             @Override
-            protected void onRowClick(int position) {
-                handleRecyclerViewRowClick(position);
+            protected void onRowClick(User user, int position) {
+                handleRecyclerViewRowClick(user);
             }
         };
         mRecyclerView.setAdapter(adapter);
@@ -68,9 +68,9 @@ public class UserDataActivity extends BaseActivity implements UserDataContract.D
         rPresenter.fetchAll();
     }
 
-    private void handleRecyclerViewRowClick(int position) {
+    private void handleRecyclerViewRowClick(User user) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Const.ARG_EX_USER, mData.get(position));
+        bundle.putParcelable(Const.ARG_EX_USER, user);
         rPresenter.gotoActivity(AddUserActivity.class, bundle);
     }
 
@@ -101,9 +101,7 @@ public class UserDataActivity extends BaseActivity implements UserDataContract.D
 
     @Override
     public void onUserRetrieval(List<User> users) {
-        mData.clear();
-        mData.addAll(users);
-        adapter.notifyDataSetChanged();
+        adapter.refreshItems(users);
     }
 
     @Override
@@ -119,6 +117,9 @@ public class UserDataActivity extends BaseActivity implements UserDataContract.D
     @Override
     protected void onDestroy() {
         rPresenter.onClear();
+        if (adapter != null) {
+            adapter.clear();
+        }
         super.onDestroy();
     }
 
