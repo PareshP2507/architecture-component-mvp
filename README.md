@@ -1,6 +1,6 @@
 ## Android Archiecture Components
 
-A sample code, contains the way how the [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html) can be implemented.
+A sample code contains a way how [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html) can be implemented.
 
 **The repo contains following components:**
 - **LifeCycle Components**<br/>
@@ -29,3 +29,4 @@ Its a wrapper over SQLite, that allows you to communicate with database like a c
   implementation "android.arch.persistence.room:runtime:$arch_viewmodel_ver"
   annotationProcessor "android.arch.persistence.room:compiler:$arch_viewmodel_ver"
   ```
+
